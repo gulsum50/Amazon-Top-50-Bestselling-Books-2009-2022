@@ -1,0 +1,45 @@
+# Amazon Top 50 Bestselling Books 2009-2022
+import pandas as pd
+import numpy as np 
+import matplotlib.pyplot as plt
+import seaborn as sns
+%matplotlib inline
+
+data =pd.read_csv(r"C:\Users\ahmet\Downloads\bestsellers_with_categories_2022_03_27.csv")
+df = pd.DataFrame(data)
+df.head()
+
+#Shows descriptive statistics data
+df.describe()
+
+#cheking for null values 
+for i in df.columns:
+  print(i,"\t-\t", df[i].isna().mean()*100)
+  df.info()
+  #sort the values of the 50 books in a ascending order from top to bottom by User Ratings. 
+top50=df.sort_values('User Rating',ascending=False)[:50]
+top50
+
+#Used seaborn to graph the genre and the user ratings.
+#Acorrding to the graph  fiction is more popular than non-fiction on Amazon
+sns.barplot(x ='Genre', y = 'User Rating',data =df)
+  
+#shows a visual reapresentation of user rating
+sns.countplot(x = df['User Rating'])
+
+#Used pandas to extract data from the column user ratings that is equal to 4.9
+#I used the groupby function to group author and user rating coulmn.
+#Shows the top authors with the highest ratings.
+bestsellers = df[df['User Rating']==5.0]
+bestsellers = bestsellers.groupby('Author')['User Rating']
+
+# I made the new year set to years from 2009-2022.
+#I used the mean() function to give the average of the other numeric columns.
+#Reset index to reset the index after making modifications to the column
+pyear = df.groupby('Year').mean().reset_index()
+pyear['Year'] = [ 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022]
+pyear
+
+#plots the linear regression model of the data from x and y.
+#From the data the amazon price of books declined as the years went on.
+sns.regplot(x="Year", y="Price",data=pyear)
