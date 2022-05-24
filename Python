@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 %matplotlib inline
 
-data =pd.read_csv(r"C:\Users\ahmet\Downloads\bestsellers_with_categories_2022_03_27.csv")
+data =pd.read_csv(r"C:\Users\Gulsum\Downloads\bestsellers_with_categories_2022_03_27.csv")
 df = pd.DataFrame(data)
 df.head()
 
