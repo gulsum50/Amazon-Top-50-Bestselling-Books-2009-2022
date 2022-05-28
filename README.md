@@ -4,7 +4,6 @@
 # Amazon-Top-50-Bestselling-Books-2009-2022
 
 
-#Table of Contents
 
 
 
@@ -19,7 +18,11 @@ How sells distribution in the perspective of genres?
 
 
 Results
+
+
 The main findings of the code can be found at the post available here.
 
 DATA
+
+
 https://www.kaggle.com/datasets/chriskachmar/amazon-top-50-bestselling-books-2009-2022
