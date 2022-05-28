@@ -33,6 +33,9 @@ sns.countplot(x = df['User Rating'])
 bestsellers = df[df['User Rating']==5.0]
 bestsellers = bestsellers.groupby('Author')['User Rating']
 
+
+fig, ax = plt.subplots(figsize=(10, 5))
+sns.lineplot(y='Reviews', x='Year', data=data, ax=ax)
 # I made the new year set to years from 2009-2022.
 #I used the mean() function to give the average of the other numeric columns.
 #Reset index to reset the index after making modifications to the column
@@ -40,6 +43,51 @@ pyear = df.groupby('Year').mean().reset_index()
 pyear['Year'] = [ 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022]
 pyear
 
+#Performing EDA on the data.
 #plots the linear regression model of the data from x and y.
 #From the data the amazon price of books declined as the years went on.
 sns.regplot(x="Year", y="Price",data=pyear)
+sns.regplot(x=data['User Rating'], y=data['Price'])
+fig, ax = plt.subplots(figsize=(10, 5))
+sns.lineplot(y='Reviews', x='Year', data=data, ax=ax)
+
+fig, axs = plt.subplots(2, 2, figsize=(16,10))
+fig.delaxes(axs[1,1])
+
+axs[0,0].hist(data['Reviews'], bins=50)
+axs[0,1].hist(data['Price'], bins=50)
+axs[1,0].hist(data['Year'], bins=50)
+axs[0,0].title.set_text('Reviews')
+axs[0,1].title.set_text('Price')
+axs[1,0].title.set_text('Year')
+plt.show()
+
+#Used seaborn to graph the genre and the user ratings.
+#Acorrding to the graph  fiction is more popular than non-fiction on Amazon
+sns.barplot(y='User Rating', x = 'Genre',data =df)
+
+fig, ax = plt.subplots(1, 2, figsize=(16,7))
+ax[0].scatter('Price', 'User Rating', data=data, color='b')
+ax[1].scatter('Reviews', 'User Rating', data=data, color='r')
+plt.show()
+
+sns.jointplot(x=data['Price'], y=data['User Rating'], kind="kde")
+
+#Creating new dataframe by copying the existing one so we can use it later without errors.
+data_for_tree = data.copy(deep=True)
+data_for_tree
+data=pd.get_dummies(data, drop_first=True, columns=['Year', 'Genre'])
+data.head()
+
+#Plotting Correlation
+data.corr()
+
+fig, ax = plt.subplots(figsize=(16, 12))
+sns.heatmap(data.corr(),annot=True,ax=ax)
+data.columns
+# Lets remove Outliers
+plt.hist(data['Reviews'], bins=100)
+outlier_limit = (data['Reviews'].mean() + 3*data['Reviews'].std())
+plt.axvline(x=outlier_limit, color='r')
+plt.show()
+
